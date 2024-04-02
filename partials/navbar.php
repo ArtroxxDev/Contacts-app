@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand font-weight-bold" href="#">
+        <a class="navbar-brand font-weight-bold" href="./index.php">
             <img class="mr-2" src="./static/img/logo.png" />
             ContactsApp
         </a>
