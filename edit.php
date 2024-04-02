@@ -1,12 +1,26 @@
 <?php
 
 require "database.php";
+
 session_start();
 
 if(!isset($_SESSION["user"])){
   header("Location: login.php");
   return;
 }
+
+$id = $_GET["id"];
+
+$statement = $pdo->prepare("SELECT * FROM contacts WHERE id = :id LIMIT 1");
+$statement->execute([":id" => $id]);
+
+if ($statement->rowCount() == 0) {
+    http_response_code(404);
+    echo ("HTTP 404 NOT FOUNT PERRA");
+    return;
+}
+
+$contact = $statement->fetch(PDO::FETCH_ASSOC);
 
 $error = null;
 
@@ -19,15 +33,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = $_POST["name"];
         $phoneNumber = $_POST["phone_number"];
 
-        $statement = $pdo->prepare("INSERT INTO contacts (name, phone_number) VALUES (?, ?)");
-        $statement->execute([$name, $phoneNumber]);
+        $statement = $pdo->prepare("UPDATE contacts SET name = :name, phone_number = :phone_number WHERE id = :id");
+        $statement->execute([
+            ":id" => $id,
+            ":name" => $_POST["name"],
+            ":phone_number" => $_POST["phone_number"]
+        ]);
 
         header("location: index.php");
     }
 }
 
 ?>
-
 <?php
 require "partials/header.php";
 ?>
@@ -42,12 +59,12 @@ require "partials/header.php";
                             <?= $error ?>
                         </p>
                     <?php endif ?>
-                    <form action="add.php" method="POST">
+                    <form action="edit.php?id=<?= $contact["id"] ?>" method="POST">
                         <div class="mb-3 row">
                             <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" required autocomplete="name" autofocus>
+                                <input value="<?= $contact["name"] ?>" id="name" type="text" class="form-control" name="name" required autocomplete="name" autofocus>
                             </div>
                         </div>
 
@@ -56,7 +73,7 @@ require "partials/header.php";
                                 Number</label>
 
                             <div class="col-md-6">
-                                <input id="phone_number" type="tel" class="form-control" name="phone_number" required autocomplete="phone_number" autofocus>
+                                <input value="<?= $contact["phone_number"] ?>" id="phone_number" type="tel" class="form-control" name="phone_number" required autocomplete="phone_number" autofocus>
                             </div>
                         </div>
 
@@ -71,6 +88,7 @@ require "partials/header.php";
         </div>
     </div>
 </div>
+
 <?php
 require "partials/footer.php";
 ?>
