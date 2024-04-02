@@ -14,13 +14,22 @@ $id = $_GET["id"];
 $statement = $pdo->prepare("SELECT * FROM contacts WHERE id = :id LIMIT 1");
 $statement->execute([":id" => $id]);
 
+
+
 if ($statement->rowCount() == 0) {
     http_response_code(404);
     echo ("HTTP 404 NOT FOUNT PERRA");
     return;
 }
-
 $contact = $statement->fetch(PDO::FETCH_ASSOC);
+
+if ($contact["user_id"] != $_SESSION["user"]["id"]){
+    http_response_code(403);
+    echo ("HTTP 403 UNAUTORIZED PERRA");
+    return;
+}
+
+
 
 $error = null;
 
@@ -39,8 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ":name" => $_POST["name"],
             ":phone_number" => $_POST["phone_number"]
         ]);
+        $_SESSION["flash"] = ["message" => "Contact {$_POST['name']} updated."];
 
-        header("location: index.php");
+        header("location: home.php");
     }
 }
 

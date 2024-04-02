@@ -18,11 +18,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $name = $_POST["name"];
         $phoneNumber = $_POST["phone_number"];
+        $user_id = $_SESSION["user"]["id"];
 
-        $statement = $pdo->prepare("INSERT INTO contacts (name, phone_number) VALUES (?, ?)");
-        $statement->execute([$name, $phoneNumber]);
+        $statement = $pdo->prepare("INSERT INTO contacts (name, phone_number, user_id) VALUES (?, ?, ?)");
+        $statement->execute([$name, $phoneNumber, $user_id]);
 
-        header("location: index.php");
+        $_SESSION["flash"] = ["Contact {$_POST['name']} has been created"];
+        header("location: home.php");
+        return;
     }
 }
 

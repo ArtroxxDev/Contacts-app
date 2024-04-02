@@ -7,7 +7,8 @@ if(!isset($_SESSION["user"])){
   header("Location: login.php");
   return;
 } else {
-  $contacts = $pdo->query("SELECT * FROM contacts");
+  $user_id = $_SESSION["user"]["id"];
+  $contacts = $pdo->query("SELECT * FROM contacts WHERE user_id = $user_id");
 }
 
 
