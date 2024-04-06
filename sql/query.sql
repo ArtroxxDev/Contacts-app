@@ -27,3 +27,16 @@ create table usuarios (
 	email varchar(255) unique not null,
 	password varchar(255) not null
 )
+
+
+create table aditional_info (
+	id serial primary key,
+	address varchar(255),
+	contact_id int,
+	user_id int,
+	shared_with int,
+	
+	foreign key (user_id) references usuarios(id),
+	foreign key (shared_with) references usuarios(id),
+	foreign key (contact_id) references contacts(id)
+)
