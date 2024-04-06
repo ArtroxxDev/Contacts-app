@@ -10,7 +10,7 @@ if(!isset($_SESSION["user"])){
 
 $id = $_GET["id"];
 
-$statement = $pdo->prepare("SELECT * FROM contacts WHERE id = :id LIMIT 1");
+$statement = $pdo->prepare("SELECT * FROM aditional_info WHERE contact_id = :id LIMIT 1");
 $statement->execute([":id" => $id]);
 
 if ($statement->rowCount() == 0) {
@@ -25,9 +25,9 @@ if($contact["user_id"] != $_SESSION["user"]["id"]){
     echo ("HTTP 403 UNAUTORIZED PERRA");
     return;
 } else {
-    $pdo->prepare("DELETE FROM contacts WHERE id = :id")->execute([":id" => $id]);
+    $pdo->prepare("DELETE FROM aditional_info WHERE contact_id = :id")->execute([":id" => $id]);
 }
-$_SESSION["flash"] = ["message" => "Contact {$contact['name']} deleted."];
+$_SESSION["flash"] = ["message" => "Address of {$contact['name']} deleted."];
 
 header("Location: home.php");
 

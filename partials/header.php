@@ -8,6 +8,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="./static/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
 <?php $uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH); ?>
 <?php if($uri == "/contact_app/"  || $uri == "/contact_app/index.php"): ?>
